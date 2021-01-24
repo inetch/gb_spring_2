@@ -22,5 +22,5 @@ public class Product {
     private String title;
 
     @OneToMany(mappedBy = "product_id")
-    private List<PriceListItem> PriceListItems;
+    private List<PriceListItem> priceListItems;
 }

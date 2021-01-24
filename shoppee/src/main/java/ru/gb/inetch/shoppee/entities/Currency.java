@@ -14,18 +14,18 @@ import javax.validation.constraints.Size;
 public class Currency {
     @Id
     @Column(name = "code")
-    private String Code;
+    private String code;
 
     @NotNull(message = "Char code cannot be null")
     @Size(min = 3, max = 3, message = "Char code must be exactly 3 symbols")
     @Column(name = "char_code")
-    private String CharCode;
+    private String charCode;
 
     @NotNull(message = "Currency symbol cannot be null")
     @Column(name = "currency_symbol")
-    private Character CurrencySymbol;
+    private Character currencySymbol;
 
     @NotNull(message = "Exponent cannot be null")
     @Column(name = "exponent")
-    private Integer Exponent;
+    private Integer exponent;
 }

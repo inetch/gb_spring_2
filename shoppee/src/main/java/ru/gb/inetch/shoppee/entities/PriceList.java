@@ -21,13 +21,13 @@ public class PriceList {
     @NotNull(message = "Title not null")
     @Size(min = 6, message = "Title length min 5 symbols")
     @Column(name = "title")
-    private String Title;
+    private String title;
 
     @ManyToOne
     @JoinColumn(name = "currency_code")
     private Currency currency;
 
     @OneToMany(mappedBy = "price_list_id")
-    private List<PriceListItem> PriceListItems;
+    private List<PriceListItem> priceListItems;
 
 }
