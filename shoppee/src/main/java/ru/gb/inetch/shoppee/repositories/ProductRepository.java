@@ -8,8 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
-    Page<Product> findAllByPriceBetween(Pageable pageable, double min, double max);
-    Product findOneByTitle(String title);
+//@Repository
+//public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
+//    Page<Product> findAllByPriceBetween(Pageable pageable, double min, double max);
+//    Product findOneByTitle(String title);
+//}
+
+public class ProductRepository {
+
 }

@@ -9,21 +9,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/products")
+//@Controller
+//@RequestMapping("/products")
 public class ProductController {
-    private ProductService productService;
-
-    @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
-
-    @RequestMapping("/list")
-    public String showProductsList(Model model) {
-        List<Product> allProduct = productService.getAllProducts();
-        model.addAttribute("productsList", allProduct);
-        return "products-list";
-    }
+//    private ProductService productService;
+//
+//    @Autowired
+//    public void setProductService(ProductService productService) {
+//        this.productService = productService;
+//    }
+//
+//    @RequestMapping("/list")
+//    public String showProductsList(Model model) {
+//        List<Product> allProduct = productService.getAllProducts();
+//        model.addAttribute("productsList", allProduct);
+//        return "products-list";
+//    }
 
 }
