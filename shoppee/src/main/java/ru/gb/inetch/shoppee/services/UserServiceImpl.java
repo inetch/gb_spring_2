@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +47,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User findById(Long id){
+		return userRepository.findById(id).get();
+	}
+
+	@Override
 	@Transactional
 	public void save(SystemUser systemUser) {
 		User user = new User();
@@ -55,7 +61,15 @@ public class UserServiceImpl implements UserService {
 		user.setLastName(systemUser.getLastName());
 		user.setEmail(systemUser.getEmail());
 
-		user.setRoles(Arrays.asList(roleRepository.findOneByName("ROLE_EMPLOYEE")));
+		save(user);
+	}
+
+	@Override
+	@Transactional
+	public void save(User user) {
+		if(user.getRoles().isEmpty()){
+			user.setRoles(Arrays.asList(roleRepository.findOneByName("ROLE_EMPLOYEE")));
+		}
 
 		userRepository.save(user);
 	}
@@ -69,6 +83,11 @@ public class UserServiceImpl implements UserService {
 		}
 		return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
 				mapRolesToAuthorities(user.getRoles()));
+	}
+
+	@Override
+	public List<User> getAllUsers(){
+		return (List<User>) userRepository.findAll();
 	}
 
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {

@@ -96,6 +96,8 @@ create table prd_price_list (
     on delete no action on update no action
 ) engine=InnoDB auto_increment=1 default charset=utf8;
 
+alter table prd_price_list add is_default bool not null default false;
+
 drop table if exists prd_product;
 create table prd_product (
     id              bigint          not null auto_increment
@@ -119,5 +121,21 @@ create table prd_price_list_item (
   , constraint prd_price_list_item_list_fk foreign key (price_list_id) references prd_price_list(id)
     on delete no action on update no action
 ) engine=InnoDB default charset=utf8;
+
+drop view if exists prd_default_price_vw;
+create view prd_default_price_vw as
+select pli.id price_list_item_id
+     , pl.id price_list_id
+     , p.id product_id
+     , p.title
+     , pli.price / power(10, c.exponent) price
+     , c.currency_symbol
+     , c.code
+     , pli.price original_price
+  from prd_price_list pl
+       join prd_price_list_item pli on (pli.price_list_id = pl.id)
+       join prd_product p on (pli.product_id = p.id)
+       join com_currency c on (pl.currency_code = c.code)
+ where pl.is_default;
 
 set foreign_key_checks = 1;
