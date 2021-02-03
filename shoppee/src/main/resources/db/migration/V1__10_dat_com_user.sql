@@ -1,0 +1,1 @@
+insert into com_user (id, username, password, first_name, last_name, email) values (1, 'ivan','$2y$10$r1sOLfQvH5ITTX71y6I69.5hfpMlXVE0rad4L3hnt0494ZaB2KFZO','Ivan','Netch','foo@bar.com'); --ivan/password

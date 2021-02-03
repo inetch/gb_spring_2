@@ -1,0 +1,3 @@
+alter table prd_price_list_item add constraint prd_price_list_item_pk primary key (price_list_id, product_id);
+alter table prd_price_list_item add constraint prd_price_list_item_product_fk foreign key (product_id) references prd_product(id) on delete no action on update no action;
+alter table prd_price_list_item add constraint prd_price_list_item_list_fk foreign key (price_list_id) references prd_price_list(id) on delete no action on update no action;
