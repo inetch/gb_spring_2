@@ -1,7 +1,7 @@
 package ru.gb.inetch.shoppee.services;
 
 import ru.gb.inetch.shoppee.repositories.RoleRepository;
-import ru.gb.inetch.shoppee.repositories.UserRepository;
+import ru.gb.inetch.shoppee.repositories.UserRepositoryImpl;
 import ru.gb.inetch.shoppee.entities.SystemUser;
 import ru.gb.inetch.shoppee.entities.Role;
 import ru.gb.inetch.shoppee.entities.User;
@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-	private UserRepository userRepository;
+	private UserRepositoryImpl userRepository;
 	private RoleRepository roleRepository;
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
-	public void setUserRepository(UserRepository userRepository) {
+	public void setUserRepository(UserRepositoryImpl userRepository) {
 		this.userRepository = userRepository;
 	}
 
@@ -43,12 +43,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User findByUserName(String userName) {
-		return userRepository.findOneByUserName(userName);
+		return userRepository.getUser(userName);
 	}
 
 	@Override
 	public User findById(Long id){
-		return userRepository.findById(id).get();
+		return userRepository.getUser(id);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		User user = userRepository.findOneByUserName(userName);
+		User user = userRepository.getUser(userName);
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> getAllUsers(){
-		return (List<User>) userRepository.findAll();
+		return (List<User>) userRepository.getAll();
 	}
 
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
