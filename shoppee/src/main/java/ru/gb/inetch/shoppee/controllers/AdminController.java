@@ -1,5 +1,8 @@
 package ru.gb.inetch.shoppee.controllers;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import ru.gb.inetch.shoppee.entities.Product;
 import ru.gb.inetch.shoppee.entities.User;
 import ru.gb.inetch.shoppee.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,14 +24,23 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("")
-    public String adminHome(Principal principal, Model model) {
-        User user = userService.findByUserName(principal.getName());
-        String email = "unknown";
-        if (user != null) {
-            email = user.getEmail();
-        }
-        model.addAttribute("email", email);
-        return "admin-panel";
+    @GetMapping("user-list")
+    public String showUserList(Model model) {
+        List<User> allUsers = userService.getAllUsers();
+        model.addAttribute("userList", allUsers);
+        return "user-list";
     }
+
+    @GetMapping("user/{id}")
+    public String editUser(@PathVariable(value = "id") Long id, Model model) {
+        model.addAttribute("user", userService.findById(id));
+        return "user-form";
+    }
+
+    @PostMapping("user-form")
+    public String updateUser(User user) {
+        userService.save(user);
+        return "redirect:user-list";
+    }
+
 }

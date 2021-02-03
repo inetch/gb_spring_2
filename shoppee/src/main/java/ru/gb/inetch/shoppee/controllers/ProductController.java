@@ -1,19 +1,15 @@
 package ru.gb.inetch.shoppee.controllers;
 
-import ru.gb.inetch.shoppee.entities.Product;
-import ru.gb.inetch.shoppee.entities.Student;
-import ru.gb.inetch.shoppee.services.ProductService;
-import ru.gb.inetch.shoppee.services.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.gb.inetch.shoppee.entities.Product;
+import ru.gb.inetch.shoppee.services.ProductService;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
-@RequestMapping("/products")
 public class ProductController {
     private ProductService productService;
 
@@ -22,11 +18,11 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @RequestMapping("/list")
-    public String showStudentsList(Model model) {
+    @RequestMapping("/product-list")
+    public String showProductsList(Model model) {
         List<Product> allProduct = productService.getAllProducts();
-        model.addAttribute("productsList", allProduct);
-        return "products-list";
+        model.addAttribute("productList", allProduct);
+        return "product-list";
     }
 
 }

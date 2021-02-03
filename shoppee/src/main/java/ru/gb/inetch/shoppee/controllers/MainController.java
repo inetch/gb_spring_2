@@ -11,4 +11,9 @@ public class MainController {
     public String showHomePage() {
         return "index";
     }
+
+/*    @RequestMapping("/authenticateTheUser")
+    public String showIndexPage() {
+        return "index";
+    }*/
 }

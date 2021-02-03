@@ -42,11 +42,27 @@
 
 </head>
 
-<body class="animsition">
+<body>
 
 <!-- Header -->
 <header>
-    <div th:replace="~{navigation :: navi(ProductList)}" />
+    <!-- <div th:replace="~{navigation :: navi(productList)}" /> -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/shoppee">Shoppee</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="product-list">Customers</a>
+                </li>
+            </ul>
+        </div>-->
+    </nav>
 </header>
 
 <!-- Headline -->
@@ -58,14 +74,31 @@
             <td>Id</td>
             <td>Title</td>
             <td>Price</td>
+            <td>Curr</td>
         </tr>
         </thead>
 
-        <tr class="myTableRow responsive-row" th:each="product : ${productsList}" th:attr="entryIndex=${product.id}">
+        <tr class="myTableRow responsive-row" th:each="product : ${productList}" th:attr="entryIndex=${product.id}">
             <td th:text="${product.id}"/>
             <td th:text="${product.title}"/>
             <td th:text="${product.price}"/>
+            <td th:text="${product.currencySymbol}"/>
         </tr>
+
+
+        <!--
+        <tr th:each="product : ${products}">
+                    <th scope="row" th:text="${product.id}">1</th>
+                    <td th:text="${product.name}">MacBook Air 13" CZ</td>
+                    <td th:text="${product.description}">MacBook - Intel Core i5 5350U Broadwell, 13" TN lesklý 1440 × 900, RAM 8GB DDR3</td>
+                    <td th:text="${product.price}">$1000</td>
+                    <td>
+                        <a class="btn btn-success" th:href="@{/product/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger" th:href="@{/product/delete/{id}(id = ${product.id})}"><i class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+        -->
+
     </table>
 </div>
 

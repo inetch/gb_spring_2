@@ -1,32 +1,38 @@
 package ru.gb.inetch.shoppee.entities;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "prd_product")
 @Data
-@NoArgsConstructor
+@Table(name = "prd_default_price_vw")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "price_list_item_id")
     private Long id;
 
-    @NotNull(message = "Title not null")
-    @Size(min = 6, message = "Title legth min 5 sym")
+  /*  @ManyToOne
+    @JoinColumn(name = "price_list_id")
+    private PriceList priceList;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;*/
+
     @Column(name = "title")
     private String title;
 
-    @NotNull(message = "price not null")
-    @Min(value = 1, message = "Min 1")
     @Column(name = "price")
-    private Long price;
+    private Double price;
 
+    @Column(name = "currency_symbol")
+    private Character currencySymbol;
 
+  /*  @Column(name = "code")
+    private String currencyCode;
+
+    @Column(name = "original_price")
+    private Integer originalPrice;*/
 }
