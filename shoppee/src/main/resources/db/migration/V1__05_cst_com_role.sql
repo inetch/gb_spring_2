@@ -1,0 +1,1 @@
+alter table com_role add constraint com_role_pk primary key (id);

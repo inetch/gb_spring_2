@@ -1,0 +1,1 @@
+insert into prd_price_list(id, title, currency_code) values (1, 'default', '643');

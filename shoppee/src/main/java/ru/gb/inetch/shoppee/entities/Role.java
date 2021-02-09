@@ -3,20 +3,37 @@ package ru.gb.inetch.shoppee.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
-@Entity
-@Data
-@Table(name = "com_role")
 public class Role {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
 	private Long id;
-
-	@Column(name = "role_name")
 	private String name;
 
 	public Role() {
+	}
+
+	public static final Map<String, String> COLUMN_MAPPINGS = new HashMap<>();
+
+	static {
+		COLUMN_MAPPINGS.put("id", "id");
+		COLUMN_MAPPINGS.put("role_name", "name");
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Role(String name) {

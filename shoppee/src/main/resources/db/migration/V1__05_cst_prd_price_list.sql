@@ -1,0 +1,2 @@
+alter table prd_price_list add constraint prd_price_list_pk primary key (id);
+alter table prd_price_list add constraint prd_price_list_curr_fk foreign key (currency_code) references com_currency(code) on delete no action on update no action;
