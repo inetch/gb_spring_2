@@ -2,29 +2,33 @@ package ru.gb.inetch.shoppee.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.gb.inetch.shoppee.util.ColumnMap;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /*@Entity
-@Table(name = "prd_price_list_item")
+@Table(name = "prd_price_list_item")*/
 @Data
-@NoArgsConstructor*/
+//@NoArgsConstructor
 public class PriceListItem {
-/*    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
+    private Long priceListId;
+    private Long productId;
+    private String title;
+    private Double price;
+    private String currencySymbol;
+    private Long originalPrice;
 
-    @ManyToOne
-    @JoinColumn(name = "price_list_id")
-    private PriceList priceList;
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @NotNull(message = "Price must not be null")
-    @Column(name = "price")
-    private Long price;*/
+    static {
+        COLUMN_MAPPINGS.put("price_list_item_id", "id");
+        COLUMN_MAPPINGS.put("price_list_id", "priceListId");
+        COLUMN_MAPPINGS.put("product_id", "productId");
+        COLUMN_MAPPINGS.put("title", "title");
+        COLUMN_MAPPINGS.put("price", "price");
+        COLUMN_MAPPINGS.put("currency_symbol", "currencySymbol");
+        COLUMN_MAPPINGS.put("original_price", "originalPrice");
+    }
 }

@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void save(User user) {
 		if(user.getRoles().isEmpty()){
-			user.setRoles(Arrays.asList(roleRepository.findOneByName("ROLE_EMPLOYEE")));
+			user.setRoles(Arrays.asList(roleRepository.getRole("ROLE_EMPLOYEE")));
 		}
 
 		userRepository.save(user);

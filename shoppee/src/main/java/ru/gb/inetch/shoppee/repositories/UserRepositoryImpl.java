@@ -14,27 +14,27 @@ public class UserRepositoryImpl implements UserRepository {
     private final Sql2o sql2o;
 
     private static final String QUERY_SELECT_USER =
-            "select " + User.allTableColumns + " from com_user where username = :u_name";
+            "select " + User.COLUMN_MAPPINGS.getAllTableColumns() + " from com_user where username = :u_name";
 
     private static final String QUERY_SELECT_USER_BY_ID =
-            "select " + User.allTableColumns + " from com_user where id = :u_id";
+            "select " + User.COLUMN_MAPPINGS.getAllTableColumns() + " from com_user where id = :u_id";
 
     private static final String QUERY_SELECT_ALL_USERS =
-            "select " + User.allTableColumns + " from com_user";
+            "select " + User.COLUMN_MAPPINGS.getAllTableColumns() + " from com_user";
 
     private static final String QUERY_SELECT_USER_ROLES_BY_ID =
-            "select r.id" +
-            "     , r.role_name" +
+            "select " + Role.COLUMN_MAPPINGS.getAllTableColumns() +
             "  from com_user_role ur" +
             "       join com_role r on (ur.role_id = r.id)" +
             " where ur.user_id = :u_id" +
             " order by r.id";
 
-    private static final String QUERY_UPDATE_USER_BY_ID =
-            "update com_user set " + User.updatePairs + " where id = :id";
+    private final String QUERY_UPDATE_USER_BY_ID =
+            "update com_user set " + User.COLUMN_MAPPINGS.getUpdatePairs() + " where id = :id";
 
     private static final String QUERY_INSERT_USER =
-            "insert into com_user (" + User.updatableTableColumns + ") values (" + User.updatableEntityFields + ")";
+            "insert into com_user (" + User.COLUMN_MAPPINGS.getUpdatableTableColumns() +
+                    ") values (" + User.COLUMN_MAPPINGS.getUpdatableEntityFields() + ")";
 
     @Autowired
     public UserRepositoryImpl(Sql2o sql2o) {
@@ -45,13 +45,14 @@ public class UserRepositoryImpl implements UserRepository {
         user.setRoles(
                 connection.createQuery(QUERY_SELECT_USER_ROLES_BY_ID, false)
                         .addParameter("u_id", user.getId())
-                        .setColumnMappings(User.COLUMN_MAPPINGS)
+                        .setColumnMappings(Role.COLUMN_MAPPINGS)
                         .executeAndFetch(Role.class)
         );
     }
 
     @Override
     public User getUser(String userName) {
+        System.out.println(QUERY_SELECT_USER);
         try (Connection connection = sql2o.open()) {
             User user = connection.createQuery(QUERY_SELECT_USER, false)
                     .addParameter("u_name", userName)

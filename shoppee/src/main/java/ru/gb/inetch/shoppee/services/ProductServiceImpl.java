@@ -3,6 +3,7 @@ package ru.gb.inetch.shoppee.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.gb.inetch.shoppee.entities.Product;
+import ru.gb.inetch.shoppee.repositories.PriceListItemRepository;
 import ru.gb.inetch.shoppee.repositories.ProductRepository;
 
 import java.util.List;
