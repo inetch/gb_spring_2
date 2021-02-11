@@ -23,6 +23,11 @@ public class PriceListItemServiceImpl implements PriceListItemService{
         System.out.println("PriceListItemServiceImpl.getAll done");
         return all;
     }
+
+    @Override
+    public PriceListItem getByProduct_id(Long productId) {
+        return priceListItemRepo.getByProductId(productId);
+    }
 }
 
 

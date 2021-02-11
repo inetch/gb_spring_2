@@ -47,7 +47,7 @@
 
         <tr th:each="product,iterStat : ${products}">
 
-            <td th:text="${iterStat.index}"/>3
+            <td th:text="${iterStat.index}"/>
             <td th:text="${product.id}"/>
             <!--<td>
                 <img th:if="${product.images.size() > 0}" width="40" height="40" th:src="@{'/images/' + ${product.images[0].path}}" />

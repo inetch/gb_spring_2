@@ -48,4 +48,13 @@ public class PriceListItemRepositoryImpl implements PriceListItemRepository{
     ){
         return getAll();
     }
+
+    @Override
+    public PriceListItem getByProductId(Long productId) {
+        try (Connection connection = sql2o.open()) {
+            return connection.createQuery(QUERY_SELECT_ITEM, false)
+                    .setColumnMappings(PriceListItem.COLUMN_MAPPINGS)
+                    .executeAndFetchFirst(PriceListItem.class);
+        }
+    }
 }
