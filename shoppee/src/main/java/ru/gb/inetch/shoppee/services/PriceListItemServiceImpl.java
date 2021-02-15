@@ -18,32 +18,16 @@ public class PriceListItemServiceImpl implements PriceListItemService{
 
     @Override
     public List<PriceListItem> getAll() {
-        System.out.println("PriceListItemServiceImpl.getAll");
-        List<PriceListItem> all = (List<PriceListItem>)priceListItemRepo.getAll();
-        System.out.println("PriceListItemServiceImpl.getAll done");
-        return all;
+        return (List<PriceListItem>)priceListItemRepo.getAll();
     }
 
     @Override
-    public PriceListItem getByProduct_id(Long productId) {
+    public PriceListItem getByProductId(Long productId) {
         return priceListItemRepo.getByProductId(productId);
     }
-}
-
-
-/*
-@Service
-public class ProductServiceImpl implements ProductService {
-
-    private PriceListItemRepository priceListItemRepo;
-
-    @Autowired
-    public void setProductRepository(PriceListItemRepository repo) {
-        this.priceListItemRepo = repo;
-    }
 
     @Override
-    public List<Product> getAllProducts() {
-        return (List<Product>) priceListItemRepo.getAll();
+    public PriceListItem getById(Long id){
+        return priceListItemRepo.getById(id);
     }
-}*/
+}

@@ -22,8 +22,10 @@ public class ShoppingCart {
         if (orderItem == null) {
             orderItem = new OrderItem();
             orderItem.setPrice(item.getPrice());
+            orderItem.setProductId(item.getProductId());
             orderItem.setQuantity(0L);
             orderItem.setTotalPrice(0.0);
+            orderItem.setItem(item);
             items.add(orderItem);
         }
         orderItem.setQuantity(orderItem.getQuantity() + 1);

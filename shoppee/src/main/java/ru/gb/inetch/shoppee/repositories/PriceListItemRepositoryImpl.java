@@ -19,21 +19,21 @@ public class PriceListItemRepositoryImpl implements PriceListItemRepository{
         this.sql2o = sql2o;
     }
 
-    private static final String QUERY_SELECT_ITEM =
-            "select " + PriceListItem.COLUMN_MAPPINGS.getAllTableColumns() + " from prd_default_price_vw where id = :id";
+    private static final String QUERY_SELECT_ITEM_BY_PRODUCT_ID =
+            "select " + PriceListItem.COLUMN_MAPPINGS.getAllTableColumns() + " from prd_default_price_vw where product_id = :id";
+
+    private static final String QUERY_SELECT_ITEM_BY_ID =
+            "select " + PriceListItem.COLUMN_MAPPINGS.getAllTableColumns() + " from prd_default_price_vw where price_list_item_id = :id";
 
     private static final String QUERY_SELECT_ALL =
             "select " + PriceListItem.COLUMN_MAPPINGS.getAllTableColumns() + " from prd_default_price_vw";
 
     @Override
     public Collection<PriceListItem> getAll(){
-        System.out.println("PriceListItemRepositoryImpl.getAll: " + QUERY_SELECT_ALL);
         try (Connection connection = sql2o.open()) {
             Collection<PriceListItem> all = connection.createQuery(QUERY_SELECT_ALL, false)
                     .setColumnMappings(PriceListItem.COLUMN_MAPPINGS)
                     .executeAndFetch(PriceListItem.class);
-
-            System.out.println("PriceListItemRepositoryImpl.getAll done");
 
             return all;
         }
@@ -52,7 +52,18 @@ public class PriceListItemRepositoryImpl implements PriceListItemRepository{
     @Override
     public PriceListItem getByProductId(Long productId) {
         try (Connection connection = sql2o.open()) {
-            return connection.createQuery(QUERY_SELECT_ITEM, false)
+            return connection.createQuery(QUERY_SELECT_ITEM_BY_PRODUCT_ID, false)
+                    .addParameter("id", productId)
+                    .setColumnMappings(PriceListItem.COLUMN_MAPPINGS)
+                    .executeAndFetchFirst(PriceListItem.class);
+        }
+    }
+
+    @Override
+    public PriceListItem getById(Long id) {
+        try (Connection connection = sql2o.open()) {
+            return connection.createQuery(QUERY_SELECT_ITEM_BY_ID, false)
+                    .addParameter("id", id)
                     .setColumnMappings(PriceListItem.COLUMN_MAPPINGS)
                     .executeAndFetchFirst(PriceListItem.class);
         }

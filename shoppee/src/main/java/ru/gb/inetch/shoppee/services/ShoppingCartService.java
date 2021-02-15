@@ -29,9 +29,8 @@ public class ShoppingCartService {
         session.removeAttribute("cart");
     }
 
-    public void addToCart(HttpSession session, Long productId) {
-        PriceListItem item = itemService.getByProduct_id(productId);
-        addToCart(session, item);
+    public void addToCart(HttpSession session, Long id) {
+        addToCart(session, itemService.getById(id));
     }
 
     public void addToCart(HttpSession session, PriceListItem item) {
@@ -40,7 +39,7 @@ public class ShoppingCartService {
     }
 
     public void removeFromCart(HttpSession session, Long productId) {
-        PriceListItem item = itemService.getByProduct_id(productId);
+        PriceListItem item = itemService.getByProductId(productId);
         removeFromCart(session, item);
     }
 
@@ -51,7 +50,7 @@ public class ShoppingCartService {
 
     public void setProductCount(HttpSession session, Long productId, Long quantity) {
         ShoppingCart cart = getCurrentCart(session);
-        PriceListItem item = itemService.getByProduct_id(productId);
+        PriceListItem item = itemService.getByProductId(productId);
         cart.setQuantity(item, quantity);
     }
 

@@ -11,6 +11,8 @@ public class OrderItem {
     private Long quantity;
     private Double totalPrice;
 
+    private PriceListItem item;
+
     public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
 
     static {
