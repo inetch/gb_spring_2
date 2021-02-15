@@ -13,4 +13,5 @@ public interface PriceListItemRepository {
                                      Optional<Integer> pageNumber,
                                      Optional<Integer> pageSize
                                      );
+    PriceListItem getByProductId(Long productId);
 }
