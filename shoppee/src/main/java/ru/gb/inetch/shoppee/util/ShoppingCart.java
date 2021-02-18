@@ -1,5 +1,8 @@
 package ru.gb.inetch.shoppee.util;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 import ru.gb.inetch.shoppee.entities.OrderItem;
 import ru.gb.inetch.shoppee.entities.PriceListItem;
 import lombok.Data;
@@ -7,14 +10,23 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Component
+@Scope(value = WebApplicationContext.SCOPE_SESSION)
 public class ShoppingCart {
-    private List<OrderItem> items;
+    private final List<OrderItem> items;
     private Double totalCost;
 
     public ShoppingCart() {
         items = new ArrayList<>();
         totalCost = 0.0;
+    }
+
+    public Double getTotalCost() {
+        return totalCost;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
     }
 
     public void add(PriceListItem item) {
@@ -29,7 +41,6 @@ public class ShoppingCart {
             items.add(orderItem);
         }
         orderItem.setQuantity(orderItem.getQuantity() + 1);
-//        recalculate();
     }
 
     public void setQuantity(PriceListItem item, Long quantity) {
@@ -38,7 +49,6 @@ public class ShoppingCart {
             return;
         }
         orderItem.setQuantity(quantity);
-//        recalculate();
     }
 
     public void remove(PriceListItem item) {
@@ -47,12 +57,11 @@ public class ShoppingCart {
             return;
         }
         items.remove(orderItem);
-//        recalculate();
     }
 
-    private void recalculate() {
+    public void recalculate() {
         totalCost = 0.0;
-        Long total = 0L;
+        long total = 0L;
         for (OrderItem o : items) {
             o.setTotalPrice((double)(o.getQuantity() * o.getItem().getOriginalPrice()) / 100);
             total += o.getQuantity() * o.getItem().getOriginalPrice();
