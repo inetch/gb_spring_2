@@ -1,6 +1,8 @@
 package ru.gb.inetch.shoppee.services;
 
+import org.springframework.context.annotation.PropertySource;
 import ru.gb.inetch.shoppee.entities.PriceListItem;
+import ru.gb.inetch.shoppee.services.mq.QueueCartService;
 import ru.gb.inetch.shoppee.util.ShoppingCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

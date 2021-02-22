@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.inetch.shoppee.services.mq.QueueCartService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -26,11 +27,12 @@ public class ShopController {
     private static final int PAGE_SIZE = 5;
 
 //    private MailService mailService;
-    private UserService userService;
-    private OrderService orderService;
+//    private UserService userService;
+//    private OrderService orderService;
 //    private ProductService productService;
     private ShoppingCartService shoppingCartService;
-    private PriceListItemService priceListItemService;
+//    private PriceListItemService priceListItemService;
+    private QueueCartService queueCartService;
 //    private DeliveryAddressService deliverAddressService;
 
     /*@Autowired
@@ -38,10 +40,10 @@ public class ShopController {
         this.productService = productService;
     }*/
 
-    @Autowired
+   /* @Autowired
     public void setPriceListItemService(PriceListItemService priceListItemService) {
         this.priceListItemService = priceListItemService;
-    }
+    }*/
 
     @Autowired
     public void setShoppingCartService(ShoppingCartService shoppingCartService) {
@@ -49,6 +51,11 @@ public class ShopController {
     }
 
     @Autowired
+    public void setQueueCartService(QueueCartService queueCartService) {
+        this.queueCartService = queueCartService;
+    }
+
+    /* @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
@@ -56,7 +63,7 @@ public class ShopController {
     @Autowired
     public void setOrderService(OrderService orderService) {
         this.orderService = orderService;
-    }
+    }*/
 
 /*    @Autowired
     public void setDeliverAddressService(DeliveryAddressService deliverAddressService) {
@@ -112,6 +119,16 @@ public class ShopController {
         String referrer = httpServletRequest.getHeader("referer");
         System.out.println("referrer: " + referrer);
         return "redirect:" + referrer;
+    }
+
+    @GetMapping("/order/fill")
+    public String orderFill(Model model, HttpServletRequest httpServletRequest, Principal principal){
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        queueCartService.receiveMessage();
+        System.out.println(queueCartService.getLastMessage());
+        return "index";
     }
 
    /* @GetMapping("/order/fill")
