@@ -49,9 +49,12 @@ public class QueueCartServiceImpl implements QueueCartService{
 
     @Override
     public void receiveMessage(){
-        try (Connection connection = mqFactory.newConnection();
-             Channel channel = connection.createChannel()
-        ) {
+        /*try (Connection connection = mqFactory.newConnection();
+             Channel channel = connection.createChannel())*/
+        try
+        {
+            Connection connection = mqFactory.newConnection();
+            Channel channel = connection.createChannel();
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             System.out.println("wait message");
 
