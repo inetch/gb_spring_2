@@ -62,4 +62,8 @@ public class ShoppingCartService {
     public double getTotalCost(HttpSession session) {
         return getCurrentCart(session).getTotalCost();
     }
+
+    public void cartRecalculate(HttpSession session){
+        getCurrentCart(session).recalculate();
+    }
 }
