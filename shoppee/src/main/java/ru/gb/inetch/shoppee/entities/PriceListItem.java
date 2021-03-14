@@ -19,6 +19,7 @@ public class PriceListItem {
     private Double price;
     private String currencySymbol;
     private Long originalPrice;
+    private Long totalCount;
 
     public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
 
@@ -30,5 +31,6 @@ public class PriceListItem {
         COLUMN_MAPPINGS.put("price", "price");
         COLUMN_MAPPINGS.put("currency_symbol", "currencySymbol");
         COLUMN_MAPPINGS.put("original_price", "originalPrice");
+        COLUMN_MAPPINGS.put("total_cnt", "totalCount", "count(1) over()");
     }
 }

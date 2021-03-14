@@ -11,8 +11,11 @@ public interface PriceListItemRepository {
                                      Optional<Double> maxPrice,
                                      Optional<String> titleWildcard,
                                      Optional<Integer> pageNumber,
-                                     Optional<Integer> pageSize
+                                     Optional<Integer> pageSize,
+                                     Optional<Integer> orderColumnNumber
                                      );
     PriceListItem getByProductId(Long productId);
     PriceListItem getById(Long id);
+
+    Long getLastQueryTotalCount();
 }

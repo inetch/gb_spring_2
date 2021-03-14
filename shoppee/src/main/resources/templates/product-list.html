@@ -23,13 +23,13 @@
 
     <h1 th:text="Фильтры" />
 
-  <!--  <form th:action="@{/product-list}" method="get">
+    <form th:action="@{/product-list}" method="get">
         <input hidden th:value="${page}" th:name="page">
-        <input th:value="${word != null} ? ${word}" th:name="word" type="text" placeholder="Название">
-        <input th:value="${min != null} ? ${min}" th:name="min" type="number" placeholder="Минимальная цена">
-        <input th:value="${max != null} ? ${max}" th:name="max" type="number" placeholder="Максимальная цена">
+        <input th:value="${word.isPresent()} ? ${word.get()}" th:name="word" type="text" placeholder="Название">
+        <input th:value="${min.isPresent()} ? ${min.get()}" th:name="min" type="number" placeholder="Минимальная цена">
+        <input th:value="${max.isPresent()} ? ${max.get()}" th:name="max" type="number" placeholder="Максимальная цена">
         <button type="submit" class="btn btn-primary">Фильтровать</button>
-    </form>-->
+    </form>
 
     <br>
     <table class="table table-hover">
@@ -37,7 +37,7 @@
         <tr>
             <th>id_custom</th>
             <th>ID</th>
-            <th>Картинка</th>
+<!--            <th>Картинка</th>-->
             <th>Название товара</th>
             <th>Цена</th>
             <th></th>
@@ -62,15 +62,15 @@
         </tbody>
     </table>
 
-    <!--<nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example">
         <ul class="pagination">
             &lt;!&ndash;<li class="page-item"><a class="page-link" href="#">Previous</a></li>&ndash;&gt;
-            <li th:each="i : ${#numbers.sequence(1, totalPage, 1)}">
-                <a th:class="page-link" th:text="${i}" th:classappend="${page == i ? 'active' : ''}" th:href="@{'/shop/?page=' + ${i} + ${filters}}"></a>
+            <li th:each="i : ${#numbers.sequence(1, totalPage)}">
+                <a th:class="page-link" th:text="${i}" th:classappend="${page == i ? 'active' : ''}" th:href="@{'/product-list/?page=' + ${i} + ${filters}}"></a>
             </li>
             &lt;!&ndash;<li class="page-item"><a class="page-link" href="#">Next</a></li>&ndash;&gt;
         </ul>
-    </nav>-->
+    </nav>
 
     <!--<table class="table table-hover">-->
         <!--<thead class="thead-dark">-->

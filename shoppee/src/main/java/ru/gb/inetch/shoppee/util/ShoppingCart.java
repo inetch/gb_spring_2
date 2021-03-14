@@ -71,6 +71,9 @@ public class ShoppingCart {
     }
 
     private OrderItem findOrderItem(Long productId) {
-        return items.stream().filter(o -> o.getProductId().equals(productId)).findFirst().orElse(null);
+        return items.stream()
+                .filter(o -> o.getProductId().equals(productId))
+                .findFirst()
+                .orElse(null);
     }
 }

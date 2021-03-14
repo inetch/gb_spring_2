@@ -16,14 +16,7 @@ public class ColumnMap extends HashMap<String, String> {
         updatePairsSb = new StringBuilder();
     }
 
-    @Override
-    public String put(String columnName, String propertyName){
-        if(isEmpty()){
-            allTableColumnsSb.append(columnName);
-        }else{
-            allTableColumnsSb.append(", ").append(columnName);
-        }
-
+    private void makeUpdatable(String columnName, String propertyName){
         if(!columnName.equalsIgnoreCase("id")){
             if(updatableTableColumnsSb.length() == 0){
                 updatableTableColumnsSb.append(columnName);
@@ -35,10 +28,32 @@ public class ColumnMap extends HashMap<String, String> {
                 updatePairsSb.append(", ").append(columnName).append(" = :").append(propertyName);
             }
         }
+    }
 
+    private String superPut(String columnName, String propertyName){
         super.put(columnName, propertyName);
-
         return columnName;
+    }
+
+    @Override
+    public String put(String columnName, String propertyName){
+        if(isEmpty()){
+            allTableColumnsSb.append(columnName);
+        }else{
+            allTableColumnsSb.append(", ").append(columnName);
+        }
+        makeUpdatable(columnName, propertyName);
+        return superPut(columnName, propertyName);
+    }
+
+    public String put(String columnName, String propertyName, String phrase){
+        if(isEmpty()){
+            allTableColumnsSb.append(phrase).append(" ").append(columnName);
+        }else{
+            allTableColumnsSb.append(", ").append(phrase).append(" ").append(columnName);
+        }
+        makeUpdatable(columnName, propertyName);
+        return superPut(columnName, propertyName);
     }
 
     public String getAllTableColumns(){

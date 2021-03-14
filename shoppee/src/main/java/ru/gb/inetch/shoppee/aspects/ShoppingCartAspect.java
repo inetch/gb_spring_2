@@ -1,8 +1,3 @@
-
-
-
-
-
 package ru.gb.inetch.shoppee.aspects;
 
 import org.aspectj.lang.JoinPoint;
