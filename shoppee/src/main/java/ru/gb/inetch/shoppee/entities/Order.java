@@ -9,7 +9,9 @@ public class Order {
     private Long userId;
     private Integer statusId;
 
-    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
+    public final static String TABLE_NAME = "ord_order";
+
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "id");
 
     static {
         COLUMN_MAPPINGS.put("id", "id");

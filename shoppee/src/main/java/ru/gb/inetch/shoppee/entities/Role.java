@@ -7,10 +7,12 @@ public @Data class Role {
 	private Long id;
 	private String name;
 
+	public final static String TABLE_NAME = "com_role";
+
 	public Role() {
 	}
 
-	public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
+	public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "id");
 
 	static {
 		COLUMN_MAPPINGS.put("id", "id");

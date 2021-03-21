@@ -54,12 +54,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void save(SystemUser systemUser) {
+		System.out.println("user service, save systemUser");
+
 		User user = new User();
 		user.setUserName(systemUser.getUserName());
 		user.setPassword(passwordEncoder.encode(systemUser.getPassword()));
 		user.setFirstName(systemUser.getFirstName());
 		user.setLastName(systemUser.getLastName());
 		user.setEmail(systemUser.getEmail());
+		user.setRoles(Arrays.asList(roleRepository.getDefaultRole()));
 
 		save(user);
 	}
@@ -67,8 +70,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void save(User user) {
+		System.out.println("user service, save user");
+
 		if(user.getRoles().isEmpty()){
-			user.setRoles(Arrays.asList(roleRepository.getRole("ROLE_EMPLOYEE")));
+			user.setRoles(Arrays.asList(roleRepository.getDefaultRole()));
 		}
 
 		userRepository.save(user);
@@ -92,5 +97,25 @@ public class UserServiceImpl implements UserService {
 
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean isGranted(User user, Collection<String> roles){
+		StringBuilder sb = new StringBuilder();
+		for(String s: roles){
+			if(sb.length() > 0){
+				sb.append(",");
+			}else{
+				sb.append("(");
+			}
+			sb.append("'").append(s).append("'");
+		}
+		if(sb.length() > 0){
+			sb.append(")");
+		}else{
+			return false;
+		}
+
+		return userRepository.isOnUser(user, sb.toString());
 	}
 }

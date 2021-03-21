@@ -17,5 +17,9 @@ public interface PriceListItemRepository {
     PriceListItem getByProductId(Long productId);
     PriceListItem getById(Long id);
 
+    void save(PriceListItem item);
+    void update(PriceListItem item);
+    Long create(PriceListItem item);
+
     Long getLastQueryTotalCount();
 }

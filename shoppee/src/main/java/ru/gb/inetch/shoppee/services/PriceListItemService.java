@@ -12,4 +12,6 @@ public interface PriceListItemService {
     List<PriceListItem> get(Integer pageSize, Integer pageNumber, Optional<String> wordLike, Optional<Double> minPrice, Optional<Double> maxPrice);
     Long getLastTotalCount();
     Integer getLastPageCount(Integer pageSize);
+
+    void save(PriceListItem item);
 }

@@ -13,7 +13,9 @@ public class OrderItem {
 
     private PriceListItem item;
 
-    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
+    public final static String TABLE_NAME = "ord_order_item";
+
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME);
 
     static {
         COLUMN_MAPPINGS.put("order_id", "orderId");

@@ -1,38 +1,23 @@
 package ru.gb.inetch.shoppee.entities;
 
 import lombok.Data;
+import ru.gb.inetch.shoppee.util.ColumnMap;
 
 import javax.persistence.*;
 
-@Entity
 @Data
-@Table(name = "prd_default_price_vw")
 public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "price_list_item_id")
     private Long id;
-
-  /*  @ManyToOne
-    @JoinColumn(name = "price_list_id")
-    private PriceList priceList;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;*/
-
-    @Column(name = "title")
     private String title;
+    private Long totalCount;
 
-    @Column(name = "price")
-    private Double price;
+    public final static String TABLE_NAME = "prd_product";
 
-    @Column(name = "currency_symbol")
-    private Character currencySymbol;
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "id");
 
-  /*  @Column(name = "code")
-    private String currencyCode;
-
-    @Column(name = "original_price")
-    private Integer originalPrice;*/
+    static {
+        COLUMN_MAPPINGS.put("id", "id");
+        COLUMN_MAPPINGS.put("title", "title");
+        COLUMN_MAPPINGS.put("total_cnt", "totalCount", "count(1) over()");
+    }
 }

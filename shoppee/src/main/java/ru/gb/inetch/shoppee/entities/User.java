@@ -13,9 +13,11 @@ public @Data class User {
 	private String lastName;
 	private String email;
 
+	public final static String TABLE_NAME = "com_user";
+
 	private Collection<Role> roles;
 
-	public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
+	public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "id");
 
 	static {
 		COLUMN_MAPPINGS.put("id", "id");

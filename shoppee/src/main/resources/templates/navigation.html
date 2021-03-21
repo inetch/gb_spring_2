@@ -43,7 +43,7 @@
                 </li>
                 <li sec:authorize="hasRole('ADMIN')" class="nav-item"
                     th:classappend="${activeTab == 'Products' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/products/edit/0}">Добавить товар</a>
+                    <a class="nav-link" th:href="@{/admin/product/0}">Добавить товар</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
                     <form th:action="@{/logout}" method="POST">
@@ -55,11 +55,12 @@
                         <div class="input-group-prepend">
                             <input class="form-control" type="text" placeholder="Логин" name="username"
                                    aria-describedby="inputGroup-sizing-sm">
-                            <input class="form-control" type="text" placeholder="Пароль" name="password"
+                            <input class="form-control" type="password" placeholder="Пароль" name="password"
                                    aria-describedby="inputGroup-sizing-sm">
                             <button class="btn btn-secondary btn-sm" type="submit">Войти</button>
                         </div>
                     </form>
+                    <a class="nav-link" th:href="@{/register/showRegistrationForm}">Зарегистрироваться</a>
                 </li>
             </ul>
         </div>

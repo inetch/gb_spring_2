@@ -21,7 +21,9 @@ public class PriceListItem {
     private Long originalPrice;
     private Long totalCount;
 
-    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
+    public final static String TABLE_NAME = "prd_default_price_vw";
+
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "price_list_item_id");
 
     static {
         COLUMN_MAPPINGS.put("price_list_item_id", "id");

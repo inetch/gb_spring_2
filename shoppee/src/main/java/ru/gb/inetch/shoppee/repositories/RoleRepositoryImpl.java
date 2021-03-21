@@ -13,8 +13,11 @@ public class RoleRepositoryImpl implements RoleRepository{
     private static final String QUERY_SELECT_ROLE =
             "select " + Role.COLUMN_MAPPINGS.getAllTableColumns() + " from com_role where role_name = :r_name";
 
-    private static final String QUERY_SELECT_ROLE_BY_ID =
-            "select " + Role.COLUMN_MAPPINGS.getAllTableColumns() + " from com_role where id = :r_id";
+    private static final String QUERY_GET_DEFAULT_ROLE_NAME =
+            "select role_name from com_role where is_default = 1";
+
+    private static final String QUERY_SELECT_DEFAULT_ROLE =
+            "select " + Role.COLUMN_MAPPINGS.getAllTableColumns() + " from com_role where is_default = 1";
 
     @Autowired
     public RoleRepositoryImpl(Sql2o sql2o) {
@@ -35,11 +38,29 @@ public class RoleRepositoryImpl implements RoleRepository{
     @Override
     public Role getRole(Long id){
         try (Connection connection = sql2o.open()) {
-            Role role = connection.createQuery(QUERY_SELECT_ROLE_BY_ID, false)
+            Role role = connection.createQuery(Role.COLUMN_MAPPINGS.selectAllByIdQuery("r_id"), false)
                     .addParameter("r_id", id)
                     .setColumnMappings(Role.COLUMN_MAPPINGS)
                     .executeAndFetchFirst(Role.class);
             return role;
+        }
+    }
+
+    @Override
+    public Role getDefaultRole(){
+        try (Connection connection = sql2o.open()) {
+            Role role = connection.createQuery(QUERY_SELECT_DEFAULT_ROLE, false)
+                    .setColumnMappings(Role.COLUMN_MAPPINGS)
+                    .executeAndFetchFirst(Role.class);
+            return role;
+        }
+    }
+
+    @Override
+    public String getDefaultRoleName(){
+        try (Connection connection = sql2o.open()) {
+            return connection.createQuery(QUERY_GET_DEFAULT_ROLE_NAME, false)
+                    .executeScalar(String.class);
         }
     }
 }

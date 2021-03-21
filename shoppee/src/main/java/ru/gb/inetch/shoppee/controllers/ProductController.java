@@ -1,18 +1,16 @@
 package ru.gb.inetch.shoppee.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.gb.inetch.shoppee.entities.PriceListItem;
-import ru.gb.inetch.shoppee.entities.Product;
 import ru.gb.inetch.shoppee.services.PriceListItemService;
-import ru.gb.inetch.shoppee.services.ProductService;
+import ru.gb.inetch.shoppee.services.UserService;
 
+import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +18,8 @@ import java.util.Optional;
 public class ProductController {
    // private ProductService productService;
     private PriceListItemService itemService;
+    private UserService userService;
+
     private final int INITIAL_PAGE = 0;
     private final int PAGE_SIZE = 5;
 
@@ -52,15 +52,9 @@ public class ProductController {
         final int currentPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         StringBuilder filters = new StringBuilder();
-        if (word.isPresent()) {
-            filters.append("&word=").append(word.get());
-        }
-        if (min.isPresent()) {
-            filters.append("&min=").append(min.get());
-        }
-        if (max.isPresent()) {
-            filters.append("&max=").append(max.get());
-        }
+        word.ifPresent(s -> filters.append("&word=").append(s));
+        min.ifPresent(aDouble -> filters.append("&min=").append(aDouble));
+        max.ifPresent(aDouble -> filters.append("&max=").append(aDouble));
 
         List<PriceListItem> items = itemService.get(PAGE_SIZE, currentPage, word, min, max);
 
