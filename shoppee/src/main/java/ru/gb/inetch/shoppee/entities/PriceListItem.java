@@ -7,10 +7,8 @@ import ru.gb.inetch.shoppee.util.ColumnMap;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-/*@Entity
-@Table(name = "prd_price_list_item")*/
+
 @Data
-//@NoArgsConstructor
 public class PriceListItem {
     private Long id;
     private Long priceListId;

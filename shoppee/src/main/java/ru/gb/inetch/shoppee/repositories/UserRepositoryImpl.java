@@ -8,11 +8,17 @@ import org.sql2o.Sql2o;
 import ru.gb.inetch.shoppee.entities.Role;
 import ru.gb.inetch.shoppee.entities.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
     private final Sql2o sql2o;
+    private final ConcurrentMap<String, User> userMapByName = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Long, User> userMapById = new ConcurrentHashMap<>();
 
     private static final String QUERY_SELECT_USER =
             "select " + User.COLUMN_MAPPINGS.getAllTableColumns() + " from com_user where username = :u_name";
@@ -51,6 +57,41 @@ public class UserRepositoryImpl implements UserRepository {
         );
     }
 
+    private void cacheUser(User user){
+        userMapByName.put(user.getUserName(), user);
+        userMapById.put(user.getId(), user);
+    }
+
+    private Collection<User> cacheAll(Collection<User> users){
+        Collection<User> newCollection = new ArrayList<>();
+        for(User user:users){
+            newCollection.add(cacheUser(user, user.getId()));
+        }
+        return newCollection;
+    }
+
+    private User cacheUser(User user, Long id){
+        User savedUser = userMapById.get(id);
+        if(savedUser == null){
+            savedUser = user;
+        } else {
+            user.copyTo(savedUser);
+        }
+        cacheUser(savedUser);
+        return savedUser;
+    }
+
+    private User cacheUser(User user, String userName){
+        User savedUser = userMapByName.get(userName);
+        if(savedUser == null){
+            savedUser = user;
+        } else {
+            user.copyTo(savedUser);
+        }
+        cacheUser(savedUser);
+        return savedUser;
+    }
+
     @Override
     public User getUser(String userName) {
         System.out.println(QUERY_SELECT_USER);
@@ -62,7 +103,7 @@ public class UserRepositoryImpl implements UserRepository {
             if(user != null) {
                 fetchUserRoles(user, connection);
             }
-            return user;
+            return cacheUser(user, userName);
         }
     }
 
@@ -74,22 +115,26 @@ public class UserRepositoryImpl implements UserRepository {
                     .setColumnMappings(User.COLUMN_MAPPINGS)
                     .executeAndFetchFirst(User.class);
             fetchUserRoles(user, connection);
-            return user;
+            return cacheUser(user, id);
         }
+
     }
 
     @Override
     public Collection<User> getAll() {
         try (Connection connection = sql2o.open()) {
-            return connection.createQuery(User.COLUMN_MAPPINGS.selectAllQuery(), false)
+            Collection<User> users =
+                connection.createQuery(User.COLUMN_MAPPINGS.selectAllQuery(), false)
                     .setColumnMappings(User.COLUMN_MAPPINGS)
                     .executeAndFetch(User.class);
+            return cacheAll(users);
         }
     }
 
     @Override
     @Transactional
     public void update(User user) {
+        cacheUser(user, user.getId());
         try (Connection connection = sql2o.beginTransaction()) {
             connection.createQuery(User.COLUMN_MAPPINGS.updateByIdQuery("id")).bind(user).executeUpdate();
             connection.commit();
@@ -106,6 +151,8 @@ public class UserRepositoryImpl implements UserRepository {
                     .executeUpdate()
                     .getKey(Long.class);
             connection.commit();
+            user.setId(id);
+            cacheUser(user);
             return id;
         }
     }
@@ -121,8 +168,10 @@ public class UserRepositoryImpl implements UserRepository {
         if(cnt == 0){
             Long id = create(user);
             user.setId(id);
+            cacheUser(user);
         }else{
             update(user);
+            cacheUser(user, user.getId());
         }
     }
 
