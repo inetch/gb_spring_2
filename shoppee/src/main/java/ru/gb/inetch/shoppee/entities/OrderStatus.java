@@ -8,7 +8,9 @@ public class OrderStatus {
     private Long id;
     private Long name;
 
-    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
+    public final static String TABLE_NAME = "ord_order_status";
+
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "id");
 
     static {
         COLUMN_MAPPINGS.put("id", "id");

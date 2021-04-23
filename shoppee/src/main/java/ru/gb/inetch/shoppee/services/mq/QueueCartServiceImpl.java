@@ -61,7 +61,7 @@ public class QueueCartServiceImpl implements QueueCartService{
             final DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 String msg = new String(delivery.getBody(), "UTF-8");
                 QueueCartServiceImpl.setLastMessage(msg);
-                System.out.println("Reciver " + msg);
+                System.out.println("Receiver " + msg);
             };
 
             channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> {});

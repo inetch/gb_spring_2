@@ -19,8 +19,11 @@ public class PriceListItem {
     private Double price;
     private String currencySymbol;
     private Long originalPrice;
+    private Long totalCount;
 
-    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap();
+    public final static String TABLE_NAME = "prd_default_price_vw";
+
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "price_list_item_id");
 
     static {
         COLUMN_MAPPINGS.put("price_list_item_id", "id");
@@ -30,5 +33,6 @@ public class PriceListItem {
         COLUMN_MAPPINGS.put("price", "price");
         COLUMN_MAPPINGS.put("currency_symbol", "currencySymbol");
         COLUMN_MAPPINGS.put("original_price", "originalPrice");
+        COLUMN_MAPPINGS.put("total_cnt", "totalCount", "count(1) over()");
     }
 }

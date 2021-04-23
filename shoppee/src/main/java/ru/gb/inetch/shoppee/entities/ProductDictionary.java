@@ -2,16 +2,21 @@ package ru.gb.inetch.shoppee.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.gb.inetch.shoppee.util.ColumnMap;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-/*@Entity
-@Table(name = "prd_product")
 @Data
-@NoArgsConstructor*/
 public class ProductDictionary {
+    private Long id;
+    private String title;
+
+    public final static String TABLE_NAME = "prd_product";
+
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "id");
+
 /*    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -2,6 +2,7 @@ package ru.gb.inetch.shoppee.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.gb.inetch.shoppee.util.ColumnMap;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,31 +10,21 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 
-/*@Entity
-@Table(name = "prd_price_list")
 @Data
-@NoArgsConstructor*/
 public class PriceList {
-/*
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    Long id;
+    String title;
+    String currencyCode;
+    boolean isDefault;
 
-    @NotNull(message = "Title not null")
-    @Size(min = 6, message = "Title length min 5 symbols")
-    @Column(name = "title")
-    private String title;
+    public final static String TABLE_NAME = "prd_price_list";
 
-    @ManyToOne
-    @JoinColumn(name = "currency_code")
-    private Currency currency;
+    public static final ColumnMap COLUMN_MAPPINGS = new ColumnMap(TABLE_NAME, "id");
 
-    @OneToMany(mappedBy = "price_list_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Collection<PriceListItem> priceListItems;
-*/
-
-//    @OneToMany(mappedBy = "product_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Collection<PriceListItem> priceListItems;
-
+    static {
+        COLUMN_MAPPINGS.put("id", "id");
+        COLUMN_MAPPINGS.put("title", "title");
+        COLUMN_MAPPINGS.put("currency_code", "currencyCode");
+        COLUMN_MAPPINGS.put("is_default", "isDefault");
+    }
 }

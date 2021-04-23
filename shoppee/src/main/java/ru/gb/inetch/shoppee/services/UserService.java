@@ -4,6 +4,7 @@ import ru.gb.inetch.shoppee.entities.SystemUser;
 import ru.gb.inetch.shoppee.entities.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -12,4 +13,5 @@ public interface UserService extends UserDetailsService {
     void save(SystemUser systemUser);
     void save(User systemUser);
     List<User> getAllUsers();
+    boolean isGranted(User user, Collection<String> roles);
 }

@@ -2,6 +2,7 @@ package ru.gb.inetch.shoppee.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import ru.gb.inetch.shoppee.entities.Role;
@@ -17,10 +18,7 @@ public class UserRepositoryImpl implements UserRepository {
             "select " + User.COLUMN_MAPPINGS.getAllTableColumns() + " from com_user where username = :u_name";
 
     private static final String QUERY_SELECT_USER_BY_ID =
-            "select " + User.COLUMN_MAPPINGS.getAllTableColumns() + " from com_user where id = :u_id";
-
-    private static final String QUERY_SELECT_ALL_USERS =
-            "select " + User.COLUMN_MAPPINGS.getAllTableColumns() + " from com_user";
+            User.COLUMN_MAPPINGS.selectAllByIdQuery("u_id");
 
     private static final String QUERY_SELECT_USER_ROLES_BY_ID =
             "select " + Role.COLUMN_MAPPINGS.getAllTableColumns() +
@@ -29,12 +27,15 @@ public class UserRepositoryImpl implements UserRepository {
             " where ur.user_id = :u_id" +
             " order by r.id";
 
-    private final String QUERY_UPDATE_USER_BY_ID =
-            "update com_user set " + User.COLUMN_MAPPINGS.getUpdatePairs() + " where id = :id";
+    private static final String QUERY_USER_ROLES =
+            "select count(1)" +
+                    "  from com_user_role ur" +
+                    "       join com_role r on (r.id = ur.role_id)" +
+                    " where ur.user_id = :id" +
+                    "   and r.role_name in ";
 
     private static final String QUERY_INSERT_USER =
-            "insert into com_user (" + User.COLUMN_MAPPINGS.getUpdatableTableColumns() +
-                    ") values (" + User.COLUMN_MAPPINGS.getUpdatableEntityFields() + ")";
+            User.COLUMN_MAPPINGS.insertQuery();
 
     @Autowired
     public UserRepositoryImpl(Sql2o sql2o) {
@@ -58,7 +59,9 @@ public class UserRepositoryImpl implements UserRepository {
                     .addParameter("u_name", userName)
                     .setColumnMappings(User.COLUMN_MAPPINGS)
                     .executeAndFetchFirst(User.class);
-            fetchUserRoles(user, connection);
+            if(user != null) {
+                fetchUserRoles(user, connection);
+            }
             return user;
         }
     }
@@ -78,24 +81,27 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Collection<User> getAll() {
         try (Connection connection = sql2o.open()) {
-            return connection.createQuery(QUERY_SELECT_ALL_USERS, false)
+            return connection.createQuery(User.COLUMN_MAPPINGS.selectAllQuery(), false)
                     .setColumnMappings(User.COLUMN_MAPPINGS)
                     .executeAndFetch(User.class);
         }
     }
 
     @Override
+    @Transactional
     public void update(User user) {
         try (Connection connection = sql2o.beginTransaction()) {
-            connection.createQuery(QUERY_UPDATE_USER_BY_ID).bind(user).executeUpdate();
+            connection.createQuery(User.COLUMN_MAPPINGS.updateByIdQuery("id")).bind(user).executeUpdate();
             connection.commit();
         }
     }
 
     @Override
+    @Transactional
     public Long create(User user){
+        System.out.println(QUERY_INSERT_USER);
         try (Connection connection = sql2o.beginTransaction()) {
-            Long id = connection.createQuery(QUERY_INSERT_USER, true)
+            Long id = connection.createQuery(User.COLUMN_MAPPINGS.insertQuery(), true)
                     .bind(user)
                     .executeUpdate()
                     .getKey(Long.class);
@@ -106,17 +112,28 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        Long id;
+        Long cnt;
         try (Connection connection = sql2o.open()) {
-            id = connection.createQuery("select count(id) from com_user where id = :u_id")
+            cnt = connection.createQuery("select count(id) from com_user where id = :u_id")
                     .addParameter("u_id", user.getId())
                     .executeScalar(Long.class);
         }
-        if(id == null){
-            id = create(user);
+        if(cnt == 0){
+            Long id = create(user);
             user.setId(id);
         }else{
             update(user);
         }
+    }
+
+    @Override
+    public boolean isOnUser(User user, String rolesLine){
+        Long cnt;
+        try (Connection connection = sql2o.open()) {
+            cnt = connection.createQuery(QUERY_USER_ROLES + rolesLine)
+                    .addParameter("id", user.getId())
+                    .executeScalar(Long.class);
+        }
+        return cnt > 0;
     }
 }
