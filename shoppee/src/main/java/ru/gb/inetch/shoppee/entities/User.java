@@ -48,4 +48,13 @@ public @Data class User {
 		this.email = email;
 		this.roles = roles;
 	}
+
+	public void copyTo(User user){
+		user.setId(this.id);
+		user.setUserName(this.userName);
+		user.setPassword(this.password);
+		user.setFirstName(this.firstName);
+		user.setLastName(this.lastName);
+		user.setEmail(this.email);
+	}
 }
