@@ -19,62 +19,62 @@
 
 <div th:replace="~{navigation :: navi(Shop)}"/>
 
-<!--<div class="container">-->
-<!--    <br>-->
+<div class="container">
+    <br>
 
-<!--    <h1 th:text="Фильтры" />-->
+    <h1 th:text="Фильтры" />
 
-<!--    <form th:action="@{/product-list}" method="get">-->
-<!--&lt;!&ndash;        <input hidden th:value="${page}" th:name="page">&ndash;&gt;-->
-<!--        <input th:value="${word.isPresent()} ? ${word.get()}" th:name="word" type="text" placeholder="Название">-->
-<!--        <input th:value="${min.isPresent()} ? ${min.get()}" th:name="min" type="number" placeholder="Минимальная цена">-->
-<!--        <input th:value="${max.isPresent()} ? ${max.get()}" th:name="max" type="number" placeholder="Максимальная цена">-->
-<!--        <button type="submit" class="btn btn-primary">Фильтровать</button>-->
-<!--    </form>-->
+    <form th:action="@{/product-list}" method="get">
+<!--        <input hidden th:value="${page}" th:name="page">-->
+        <input th:value="${word.isPresent()} ? ${word.get()}" th:name="word" type="text" placeholder="Название">
+        <input th:value="${min.isPresent()} ? ${min.get()}" th:name="min" type="number" placeholder="Минимальная цена">
+        <input th:value="${max.isPresent()} ? ${max.get()}" th:name="max" type="number" placeholder="Максимальная цена">
+        <button type="submit" class="btn btn-primary">Фильтровать</button>
+    </form>
 
-<!--    <br>-->
-<!--    <table class="table table-hover">-->
-<!--        <thead class="thead-dark">-->
-<!--        <tr>-->
-<!--            <th>id_custom</th>-->
-<!--            <th>ID</th>-->
-<!--&lt;!&ndash;            <th>Картинка</th>&ndash;&gt;-->
-<!--            <th>Название товара</th>-->
-<!--            <th>Цена</th>-->
-<!--            <th></th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
+    <br>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>id_custom</th>
+            <th>ID</th>
+<!--            <th>Картинка</th>-->
+            <th>Название товара</th>
+            <th>Цена</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
 
-<!--        <tr th:each="product,iterStat : ${products}">-->
+        <tr th:each="product,iterStat : ${products}">
 
-<!--            <td th:text="${iterStat.index}"/>-->
-<!--            <td th:text="${product.id}"/>-->
-<!--            &lt;!&ndash;<td>-->
-<!--                <img th:if="${product.images.size() > 0}" width="40" height="40" th:src="@{'/images/' + ${product.images[0].path}}" />-->
-<!--            </td>&ndash;&gt;-->
-<!--            <td th:text="${product.title}"/>-->
-<!--            <td th:text="${product.price + ' ' + product.currencySymbol}"/>-->
+            <td th:text="${iterStat.index}"/>
+            <td th:text="${product.id}"/>
+            <!--<td>
+                <img th:if="${product.images.size() > 0}" width="40" height="40" th:src="@{'/images/' + ${product.images[0].path}}" />
+            </td>-->
+            <td th:text="${product.title}"/>
+            <td th:text="${product.price + ' ' + product.currencySymbol}"/>
 
-<!--            <td>-->
-<!--                <a th:href="@{'/shop/cart/add/' + ${product.id}}" class="btn btn-primary">Добавить в корзину</a>-->
-<!--                <a sec:authorize="hasRole('ADMIN') || hasRole('MANAGER')" th:href="@{'/admin/product/' + ${product.id}}" class="btn btn-primary">Редактировать товар</a>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
+            <td>
+                <a th:href="@{'/shop/cart/add/' + ${product.id}}" class="btn btn-primary">Добавить в корзину</a>
+                <a sec:authorize="hasRole('ADMIN') || hasRole('MANAGER')" th:href="@{'/admin/product/' + ${product.id}}" class="btn btn-primary">Редактировать товар</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<!--    <nav aria-label="Page navigation example">-->
-<!--        <ul class="pagination">-->
-<!--            <li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
-<!--            <li th:each="i : ${#numbers.sequence(1, totalPage)}">-->
-<!--                <a th:class="page-link" th:text="${i}" th:classappend="${page == i ? 'active' : ''}" th:href="@{'/product-list/?page=' + ${i} + ${filters}}"></a>-->
-<!--            </li>-->
-<!--            <li class="page-item"><a class="page-link" href="#">Next</a></li>-->
-<!--        </ul>-->
-<!--    </nav>-->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li th:each="i : ${#numbers.sequence(1, totalPage)}">
+                <a th:class="page-link" th:text="${i}" th:classappend="${page == i ? 'active' : ''}" th:href="@{'/product-list/?page=' + ${i} + ${filters}}"></a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
 
-<!--</div>-->
+</div>
 
 </body>
 </html>
